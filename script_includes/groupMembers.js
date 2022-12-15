@@ -9,18 +9,14 @@ var groupMembers = Class.create();
 groupMember.prototype = Object.extendsObject(AbstractAjaxProcessor, {
     getMember: function (group) {
         var mbrs = "";
-        var gr = new GlideRecord("sys_user_group");
-        gr.get("name", group);
 
         var grmember = new GlideRecord('sys_user_grmember');
-        grmember.addQuery('group', gr.sys_id);
+        grmember.addQuery('group.name', group);
         grmember.query();
         while (grmember.next()) {
-            mbrs += grmember.user.user_name.toString();
-            if (grmember.hasNext())
-                mbrs += ",";
-
+            mbrs += grmember.user.sys_id + ',';
         }
+        mbrs = mbrs.substr(0,mbrs.length - 1);
         return mbrs;
     },
 
